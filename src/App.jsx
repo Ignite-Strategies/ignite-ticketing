@@ -1,10 +1,13 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import CheckoutPage from './pages/CheckoutPage';
-import SuccessPage from './pages/SuccessPage';
-import CancelPage from './pages/CancelPage';
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import './index.css'
+import CheckoutPage from './pages/CheckoutPage'
+import SuccessPage from './pages/SuccessPage'
+import CancelPage from './pages/CancelPage'
 
-function App() {
-  return (
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
     <Router>
       <Routes>
         <Route path="/" element={<CheckoutPage />} />
@@ -12,7 +15,6 @@ function App() {
         <Route path="/cancel" element={<CancelPage />} />
       </Routes>
     </Router>
-  );
-}
+  </StrictMode>,
+)
 
-export default App;
