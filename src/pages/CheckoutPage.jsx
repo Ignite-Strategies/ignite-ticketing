@@ -12,10 +12,10 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 
 const CheckoutPage = () => {
   const [showCheckout, setShowCheckout] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    paxName: '',
-    ao: '',
+    name: 'Adam Cole',
+    email: 'adam@gmail.com',
+    paxName: 'Anchorman',
+    ao: 'Patriot',
   });
   const [error, setError] = useState(null);
 
@@ -55,6 +55,7 @@ const CheckoutPage = () => {
             type: 'ticket',
             eventName: 'Bros & Brews - A Night of Impact',
             region: 'DMV',
+            name: formData.name,
             email: formData.email,
             paxName: formData.paxName || formData.name,
             ao: formData.ao,
@@ -67,12 +68,13 @@ const CheckoutPage = () => {
       }
 
       const data = await response.json();
-      return data.clientSecret;
+      // Stripe expects just the string, not an object
+      return data.clientSecret || data.client_secret;
     } catch (error) {
       console.error('Error creating checkout session:', error);
-      setError('Something went wrong. Please try again.');
+      setError(`Backend error: ${error.message}. Check that VITE_API_URL is set correctly.`);
       setShowCheckout(false);
-      return null;
+      throw error; // Throw so Stripe can handle it
     }
   }, [formData]);
 
