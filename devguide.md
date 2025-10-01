@@ -19,17 +19,15 @@
 
 1. **Install dependencies**:
 ```bash
-cd frontend
 npm install
 ```
 
 2. **Create environment file**:
 ```bash
-# In frontend/ directory
 cp .env.example .env
 ```
 
-3. **Configure environment variables** (`frontend/.env`):
+3. **Configure environment variables** (`.env`):
 ```env
 # For local development with local backend
 VITE_API_URL=http://localhost:3000
@@ -65,8 +63,8 @@ If you need to run the backend locally too:
 2. **Configure Build Settings**
    
    Vercel will auto-detect settings from `vercel.json`:
-   - **Build Command**: `cd frontend && npm install && npm run build`
-   - **Output Directory**: `frontend/dist`
+   - **Build Command**: `npm install && npm run build`
+   - **Output Directory**: `dist`
    - **Framework Preset**: Vite
 
 3. **Set Environment Variables**
@@ -88,8 +86,8 @@ The `vercel.json` configuration:
 
 ```json
 {
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/dist",
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "dist",
   "rewrites": [
     {
       "source": "/(.*)",
@@ -99,8 +97,8 @@ The `vercel.json` configuration:
 }
 ```
 
-- **buildCommand**: Builds the React app from the `frontend/` directory
-- **outputDirectory**: Serves static files from `frontend/dist`
+- **buildCommand**: Installs dependencies and builds the React app
+- **outputDirectory**: Serves static files from `dist`
 - **rewrites**: All routes redirect to `index.html` so React Router handles client-side routing
 
 This fixes the 404 errors for routes like `/success`, `/cancel`, etc.
@@ -163,21 +161,20 @@ GET ${VITE_API_URL}/api/health
 
 ```
 ignite-ticketing/
-├── frontend/                    # React application
-│   ├── src/
-│   │   ├── pages/
-│   │   │   ├── CheckoutPage.jsx  # Main ticket/donation page
-│   │   │   ├── SuccessPage.jsx   # Payment success
-│   │   │   └── CancelPage.jsx    # Payment cancelled
-│   │   ├── components/
-│   │   │   └── StripeTrustmark.jsx
-│   │   ├── App.jsx               # Router setup
-│   │   └── main.tsx              # Entry point
-│   ├── package.json
-│   └── vite.config.ts
-├── backend/                     # ⚠️ DEPRECATED - DO NOT USE
-├── vercel.json                  # Vercel deployment config
-└── devguide.md                  # This file
+├── src/
+│   ├── pages/
+│   │   ├── CheckoutPage.jsx      # Main ticket/donation page
+│   │   ├── SuccessPage.jsx       # Payment success
+│   │   └── CancelPage.jsx        # Payment cancelled
+│   ├── components/
+│   │   └── StripeTrustmark.jsx
+│   ├── App.jsx                   # Router setup
+│   └── main.tsx                  # Entry point
+├── public/
+├── package.json
+├── vite.config.ts
+├── vercel.json                   # Vercel deployment config
+└── devguide.md                   # This file
 ```
 
 ## Troubleshooting
@@ -197,9 +194,9 @@ ignite-ticketing/
 4. Check the request URL matches your `VITE_API_URL`
 
 ### Build Failures on Vercel
-- Ensure `frontend/package.json` has all dependencies
+- Ensure `package.json` has all dependencies
 - Check Vercel build logs for specific errors
-- Verify build command works locally: `cd frontend && npm run build`
+- Verify build command works locally: `npm run build`
 
 ## Environment Variables Checklist
 
@@ -223,9 +220,8 @@ ignite-ticketing/
 
 ## Common Commands
 
-### Frontend Development
+### Development
 ```bash
-cd frontend
 npm install          # Install dependencies
 npm run dev         # Start dev server
 npm run build       # Build for production

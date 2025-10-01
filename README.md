@@ -1,4 +1,4 @@
-# Ignite Ticketing - Frontend
+# Ignite Ticketing
 
 A React-based ticketing and donation platform for Ignite Events.
 
@@ -11,11 +11,10 @@ A React-based ticketing and donation platform for Ignite Events.
 
 1. Install dependencies:
 ```bash
-cd frontend
 npm install
 ```
 
-2. Create `.env` file in the `frontend` directory:
+2. Create `.env` file:
 ```bash
 VITE_API_URL=https://your-render-backend-url.onrender.com
 ```
@@ -27,7 +26,7 @@ npm run dev
 
 ## Deployment
 
-This project is configured to deploy the frontend to Vercel automatically.
+This project is configured to deploy to Vercel automatically.
 
 ### Vercel Environment Variables
 
@@ -37,22 +36,20 @@ Make sure to set in Vercel dashboard:
 ### Vercel Configuration
 
 The `vercel.json` is configured to:
-- Build the React app from the `frontend/` directory
+- Build the React app
 - Handle client-side routing (all routes redirect to `index.html`)
-- Serve static assets from `frontend/dist`
+- Serve static assets from `dist`
 
 ## Project Structure
 
 ```
 ignite-ticketing/
-├── frontend/          # React application
-│   ├── src/
-│   │   ├── pages/    # CheckoutPage, SuccessPage, CancelPage
-│   │   ├── components/
-│   │   └── App.jsx
-│   └── package.json
-├── backend/          # [DEPRECATED - DO NOT USE]
+├── src/
+│   ├── pages/        # CheckoutPage, SuccessPage, CancelPage
+│   ├── components/
+│   └── App.jsx
+├── package.json
 └── vercel.json       # Vercel deployment config
 ```
 
-**Note**: The `backend/` folder is deprecated. Use the separate `ignite-pay-backend` repository instead.
+For detailed documentation, see `devguide.md`.
