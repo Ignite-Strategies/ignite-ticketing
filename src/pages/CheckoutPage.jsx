@@ -1,17 +1,22 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
 import StripeTrustmark from '../components/StripeTrustmark';
 
-// Backend API URL - change based on environment
+// Backend API URL
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
+// Load Stripe with your publishable key
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || import.meta.env.STRIPE_PUBLISHABLE_KEY);
+
 const CheckoutPage = () => {
+  const [showCheckout, setShowCheckout] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     paxName: '',
     ao: '',
   });
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const handleInputChange = (e) => {
@@ -22,7 +27,7 @@ const CheckoutPage = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     
     // Validation
@@ -31,9 +36,12 @@ const CheckoutPage = () => {
       return;
     }
     
-    setIsLoading(true);
     setError(null);
-    
+    setShowCheckout(true);
+  };
+
+  // Fetch client secret from backend
+  const fetchClientSecret = useCallback(async () => {
     try {
       const response = await fetch(`${API_URL}/api/checkout/session`, {
         method: 'POST',
@@ -42,7 +50,7 @@ const CheckoutPage = () => {
         },
         body: JSON.stringify({
           event: 'brosandbrews',
-          amount: 2500, // $25 in cents
+          amount: 2500,
           metadata: {
             type: 'ticket',
             eventName: 'Bros & Brews - A Night of Impact',
@@ -59,17 +67,68 @@ const CheckoutPage = () => {
       }
 
       const data = await response.json();
-      if (data.url) {
-        // Redirect to Stripe Checkout
-        window.location.href = data.url;
-      }
+      return data.clientSecret;
     } catch (error) {
       console.error('Error creating checkout session:', error);
       setError('Something went wrong. Please try again.');
-    } finally {
-      setIsLoading(false);
+      setShowCheckout(false);
+      return null;
     }
-  };
+  }, [formData]);
+
+  const options = { fetchClientSecret };
+
+  if (showCheckout) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-6">
+            <button
+              onClick={() => setShowCheckout(false)}
+              className="text-sm text-cyan-600 hover:text-cyan-700 mb-4 inline-flex items-center gap-1"
+            >
+              ← Back to details
+            </button>
+            <div className="text-4xl mb-3">🍻</div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              Complete Your Payment
+            </h1>
+            <div className="bg-white rounded-lg shadow-sm p-3 inline-block">
+              <p className="text-sm text-gray-600">
+                <span className="font-semibold">{formData.name}</span> • {formData.email}
+              </p>
+            </div>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+
+          {/* Embedded Checkout */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <EmbeddedCheckoutProvider
+              stripe={stripePromise}
+              options={options}
+            >
+              <EmbeddedCheckout />
+            </EmbeddedCheckoutProvider>
+          </div>
+
+          {/* Trust Message */}
+          <div className="mt-6 text-center">
+            <StripeTrustmark />
+            <p className="text-xs text-gray-500 mt-4">
+              Your payment is encrypted and secure
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
@@ -176,20 +235,9 @@ const CheckoutPage = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isLoading}
-              className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-200 transform hover:scale-[1.02] disabled:scale-100 shadow-lg"
+              className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-200 transform hover:scale-[1.02] shadow-lg"
             >
-              {isLoading ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Processing...
-                </span>
-              ) : (
-                'Submit Payment'
-              )}
+              Continue to Payment
             </button>
           </form>
 
