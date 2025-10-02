@@ -2,12 +2,10 @@ import { useState, useCallback } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
 import StripeTrustmark from '../components/StripeTrustmark';
-
-// Backend API URL
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+import { CONFIG } from '../config';
 
 // Load Stripe with your publishable key
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || import.meta.env.STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(CONFIG.STRIPE_PUBLISHABLE_KEY);
 
 const CheckoutPage = () => {
   const [showCheckout, setShowCheckout] = useState(false);
@@ -42,8 +40,11 @@ const CheckoutPage = () => {
 
   // Fetch client secret from backend
   const fetchClientSecret = useCallback(async () => {
+    console.log('🔵 API_URL:', CONFIG.API_URL);
+    console.log('🔵 Fetching checkout session...');
+    
     try {
-      const response = await fetch(`${API_URL}/api/checkout/session`, {
+      const response = await fetch(`${CONFIG.API_URL}/api/checkout/session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -63,18 +64,30 @@ const CheckoutPage = () => {
         }),
       });
 
+      console.log('🔵 Response status:', response.status);
+
       if (!response.ok) {
-        throw new Error('Failed to create checkout session');
+        const errorText = await response.text();
+        console.error('🔴 Response error:', errorText);
+        throw new Error(`Backend error: ${response.status} ${errorText}`);
       }
 
       const data = await response.json();
+      console.log('🟢 Session created:', data);
+      
       // Stripe expects just the string, not an object
       return data.clientSecret || data.client_secret;
     } catch (error) {
-      console.error('Error creating checkout session:', error);
-      setError(`Backend error: ${error.message}. Check that VITE_API_URL is set correctly.`);
+      console.error('🔴 Error creating checkout session:', error);
+      console.error('🔴 Error details:', {
+        message: error.message,
+        name: error.name,
+        stack: error.stack
+      });
+      
+      setError(`Cannot connect to payment server. API URL: ${CONFIG.API_URL}. Error: ${error.message}`);
       setShowCheckout(false);
-      throw error; // Throw so Stripe can handle it
+      throw error;
     }
   }, [formData]);
 
@@ -135,6 +148,11 @@ const CheckoutPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
       <div className="max-w-lg w-full">
+        {/* Debug Info */}
+        <div className="mb-4 bg-blue-50 border border-blue-200 text-blue-800 px-3 py-2 rounded text-xs">
+          🔧 API: {CONFIG.API_URL || 'NOT SET'}
+        </div>
+
         {/* Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-10">
           {/* Header */}
