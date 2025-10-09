@@ -288,7 +288,24 @@ export default function PublicForm() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-xl p-8">
           <div className="space-y-6">
-            {form.fields.map((field, index) => (
+            {/* First Name and Last Name on same row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {form.fields.filter(field => ['firstName', 'lastName'].includes(field.id)).map((field) => (
+                <div key={field.id}>
+                  <label className="block text-gray-700 font-semibold mb-2">
+                    {field.label}
+                    {field.required && <span className="text-red-500 ml-1">*</span>}
+                  </label>
+                  {renderField(field)}
+                  {errors[field.id] && (
+                    <p className="text-red-500 text-sm mt-1">{errors[field.id]}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+            
+            {/* Other fields */}
+            {form.fields.filter(field => !['firstName', 'lastName'].includes(field.id)).map((field, index) => (
               <div key={field.id || index}>
                 <label className="block text-gray-700 font-semibold mb-2">
                   {field.label}
