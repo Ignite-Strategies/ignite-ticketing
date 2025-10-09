@@ -280,9 +280,6 @@ export default function PublicForm() {
               {form.description}
             </p>
           )}
-          <div className="mt-6 inline-block bg-white/10 backdrop-blur-sm px-6 py-2 rounded-full">
-            <p className="text-sm font-semibold">F3 CAPITAL EVENTS</p>
-          </div>
         </div>
       </div>
 
