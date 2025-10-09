@@ -250,29 +250,15 @@ export default function PublicForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Banner - F3 Capital Style */}
-      <div className="bg-gradient-to-r from-red-600 to-black text-white py-16 px-4 shadow-xl">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="flex justify-center mb-6">
-            <div className="text-8xl animate-pulse">💪</div>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-4 tracking-tight">
-            {form.title}
-          </h1>
+    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-purple-50 py-12 px-4">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="bg-white rounded-xl shadow-xl p-8 mb-6">
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">{form.title}</h1>
           {form.description && (
-            <p className="text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed">
-              {form.description}
-            </p>
+            <p className="text-gray-600 text-lg">{form.description}</p>
           )}
-          <div className="mt-6 inline-block bg-white/10 backdrop-blur-sm px-6 py-2 rounded-full">
-            <p className="text-sm font-semibold">F3 CAPITAL EVENTS</p>
-          </div>
         </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto px-4 -mt-8 pb-12">
-        {/* Spacer removed, form comes right after banner */}
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-xl p-8">
@@ -294,24 +280,15 @@ export default function PublicForm() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full mt-8 bg-gradient-to-r from-red-600 to-black hover:from-red-700 hover:to-gray-900 text-white py-4 rounded-lg font-bold text-xl transition disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl transform hover:scale-[1.02]"
+            className="w-full mt-8 bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-700 hover:to-purple-700 text-white py-4 rounded-lg font-bold text-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
           >
-            {submitting ? (
-              <span className="flex items-center justify-center gap-2">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                Submitting...
-              </span>
-            ) : (
-              <span className="flex items-center justify-center gap-2">
-                💪 Lock In My Spot
-              </span>
-            )}
+            {submitting ? 'Submitting...' : 'Submit'}
           </button>
         </form>
 
         {/* Footer */}
-        <div className="text-center mt-8 text-gray-600 text-sm font-medium">
-          <p>Powered by <span className="text-red-600 font-bold">F3 CAPITAL</span> Events</p>
+        <div className="text-center mt-8 text-gray-500 text-sm">
+          Powered by F3 Capital Events
         </div>
       </div>
     </div>
