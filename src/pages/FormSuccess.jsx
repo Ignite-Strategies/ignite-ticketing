@@ -21,8 +21,7 @@ const FormSuccess = () => {
 
         {/* F3 Capital Branding */}
         <div className="bg-gradient-to-r from-red-600 to-black text-white py-4 px-6 rounded-lg mb-6">
-          <p className="text-lg font-bold">F3 CAPITAL</p>
-          <p className="text-sm opacity-90">Events</p>
+          <p className="text-lg font-bold">Capital 3F Committee</p>
         </div>
 
         {/* Additional Info */}
