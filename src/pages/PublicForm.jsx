@@ -71,12 +71,15 @@ export default function PublicForm() {
     
     try {
       console.log('📤 Submitting form:', formData);
-      const response = await fetch(`${API_URL}/forms/${form.slug}/submit`, {
+      const response = await fetch(`${API_URL}/contacts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          slug: form.slug,
+          formData: formData
+        }),
       });
       
       if (!response.ok) {
