@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const API_URL = 'https://eventscrm-backend.onrender.com/api';
 
-export default function SoftCommit() {
+export default function PublicForm() {
   const navigate = useNavigate();
+  const { slug } = useParams(); // Get slug from URL
   const [form, setForm] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -12,13 +13,15 @@ export default function SoftCommit() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    loadForm();
-  }, []);
+    if (slug) {
+      loadForm();
+    }
+  }, [slug]);
 
   const loadForm = async () => {
     try {
-      console.log('🔍 Loading form from:', `${API_URL}/forms/hydrator/bros-soft-commit`);
-      const response = await fetch(`${API_URL}/forms/hydrator/bros-soft-commit`);
+      console.log('🔍 Loading form from:', `${API_URL}/forms/hydrator/${slug}`);
+      const response = await fetch(`${API_URL}/forms/hydrator/${slug}`);
       
       if (!response.ok) {
         throw new Error(`Failed to load form: ${response.statusText}`);
