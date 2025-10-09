@@ -31,9 +31,11 @@ export default function PublicForm() {
       console.log('✅ Form loaded:', data);
       console.log('📋 Fields with options:', data.fields.filter(f => f.options));
       
-      // Store orgId and eventId in localStorage for form submission
+      // Store form metadata in localStorage for form submission
       if (data.orgId) localStorage.setItem('orgId', data.orgId);
       if (data.eventId) localStorage.setItem('eventId', data.eventId);
+      if (data.audienceType) localStorage.setItem('audienceType', data.audienceType);
+      if (data.targetStage) localStorage.setItem('targetStage', data.targetStage);
       
       setForm(data);
       
@@ -83,8 +85,10 @@ export default function PublicForm() {
         },
         body: JSON.stringify({
           slug: form.slug,
-          orgId: localStorage.getItem('orgId'),     // ← Voodoo magic
-          eventId: localStorage.getItem('eventId'), // ← Voodoo magic
+          orgId: localStorage.getItem('orgId'),         // ← Voodoo magic
+          eventId: localStorage.getItem('eventId'),     // ← Voodoo magic
+          audienceType: localStorage.getItem('audienceType'), // ← Voodoo magic
+          targetStage: localStorage.getItem('targetStage'),   // ← Voodoo magic
           formData: formData
         }),
       });
