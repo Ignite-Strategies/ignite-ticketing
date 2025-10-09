@@ -31,6 +31,9 @@ export default function PublicForm() {
       console.log('✅ Form loaded:', data);
       console.log('📋 Fields with options:', data.fields.filter(f => f.options));
       
+      // Update page title
+      document.title = `${data.title} - F3 Capital Impact`;
+      
       // Store form metadata in localStorage for form submission
       if (data.orgId) localStorage.setItem('orgId', data.orgId);
       if (data.eventId) localStorage.setItem('eventId', data.eventId);
