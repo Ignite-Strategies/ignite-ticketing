@@ -20,8 +20,8 @@ export default function PublicForm() {
 
   const loadForm = async () => {
     try {
-      console.log('🔍 Loading form from:', `${API_URL}/forms/hydrator/${slug}`);
-      const response = await fetch(`${API_URL}/forms/hydrator/${slug}`);
+      console.log('🔍 Loading form from:', `${API_URL}/forms/public/${slug}`);
+      const response = await fetch(`${API_URL}/forms/public/${slug}`);
       
       if (!response.ok) {
         throw new Error(`Failed to load form: ${response.statusText}`);
