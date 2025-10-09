@@ -6,6 +6,7 @@ import CheckoutPage from './pages/CheckoutPage'
 import SuccessPage from './pages/SuccessPage'
 import CancelPage from './pages/CancelPage'
 import PublicForm from './pages/PublicForm'
+import FormSuccess from './pages/FormSuccess'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -13,6 +14,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<CheckoutPage />} />
         <Route path="/forms/:slug" element={<PublicForm />} />
+        <Route path="/form-success" element={<FormSuccess />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/cancel" element={<CancelPage />} />
       </Routes>

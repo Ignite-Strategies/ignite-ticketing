@@ -98,7 +98,7 @@ export default function PublicForm() {
       }
       
       console.log('✅ Form submitted successfully');
-      navigate('/success', { state: { formName: form.title } });
+      navigate('/form-success', { state: { formName: form.title } });
     } catch (error) {
       console.error('❌ Error submitting form:', error);
       alert('Failed to submit form. Please try again.');
