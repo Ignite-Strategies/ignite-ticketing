@@ -30,6 +30,11 @@ export default function PublicForm() {
       const data = await response.json();
       console.log('✅ Form loaded:', data);
       console.log('📋 Fields with options:', data.fields.filter(f => f.options));
+      
+      // Store orgId and eventId in localStorage for form submission
+      if (data.orgId) localStorage.setItem('orgId', data.orgId);
+      if (data.eventId) localStorage.setItem('eventId', data.eventId);
+      
       setForm(data);
       
       // Initialize formData with empty values for all fields
@@ -78,6 +83,8 @@ export default function PublicForm() {
         },
         body: JSON.stringify({
           slug: form.slug,
+          orgId: localStorage.getItem('orgId'),     // ← Voodoo magic
+          eventId: localStorage.getItem('eventId'), // ← Voodoo magic
           formData: formData
         }),
       });
