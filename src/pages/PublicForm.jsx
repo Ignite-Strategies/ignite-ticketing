@@ -29,6 +29,7 @@ export default function PublicForm() {
       
       const data = await response.json();
       console.log('✅ Form loaded:', data);
+      console.log('📋 Fields with options:', data.fields.filter(f => f.options));
       setForm(data);
       
       // Initialize formData with empty values for all fields
