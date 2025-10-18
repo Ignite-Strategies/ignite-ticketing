@@ -81,17 +81,17 @@ export default function PublicForm() {
     
     try {
       console.log('📤 Submitting form:', formData);
-      const response = await fetch(`${API_URL}/contacts`, {
+      const response = await fetch(`${API_URL}/forms/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           slug: form.slug,
-          orgId: localStorage.getItem('orgId'),         // ← Voodoo magic
-          eventId: localStorage.getItem('eventId'),     // ← Voodoo magic
-          audienceType: localStorage.getItem('audienceType'), // ← Voodoo magic
-          targetStage: localStorage.getItem('targetStage'),   // ← Voodoo magic
+          orgId: localStorage.getItem('orgId'),
+          eventId: localStorage.getItem('eventId'),
+          audienceType: localStorage.getItem('audienceType'),
+          targetStage: localStorage.getItem('targetStage'),
           formData: formData
         }),
       });
