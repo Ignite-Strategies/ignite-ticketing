@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')).render(
     <Router>
       <Routes>
         <Route path="/" element={<CheckoutPage />} />
-        <Route path="/forms/:slug" element={<PublicForm />} />
+        <Route path="/get-tickets" element={<PublicForm />} />
         <Route path="/form-success" element={<FormSuccess />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/cancel" element={<CancelPage />} />
