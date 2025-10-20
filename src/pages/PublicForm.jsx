@@ -80,6 +80,7 @@ export default function PublicForm() {
     
     try {
       console.log('📤 Submitting form:', formData);
+      console.log('🔗 API URL:', `${API_URL}/forms/submit`);
       const response = await fetch(`${API_URL}/forms/submit`, {
         method: 'POST',
         headers: {
@@ -96,7 +97,9 @@ export default function PublicForm() {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to submit form');
+        const errorText = await response.text();
+        console.error('❌ Form submission failed:', response.status, errorText);
+        throw new Error(`Form submission failed: ${response.status} - ${errorText}`);
       }
       
       console.log('✅ Form submitted successfully');
