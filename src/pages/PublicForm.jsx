@@ -80,7 +80,7 @@ export default function PublicForm() {
     
     try {
       console.log('📤 Submitting form:', formData);
-      const response = await fetch(`${API_URL}/forms/public/submit`, {
+      const response = await fetch(`${API_URL}/forms/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
