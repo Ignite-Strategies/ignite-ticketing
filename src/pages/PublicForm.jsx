@@ -5,7 +5,7 @@ const API_URL = 'https://eventscrm-backend.onrender.com/api';
 
 export default function PublicForm() {
   const navigate = useNavigate();
-  const { eventId } = useParams(); // Get eventId from URL
+  const { slug } = useParams(); // Get slug from URL
   const [form, setForm] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -13,15 +13,13 @@ export default function PublicForm() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (eventId) {
-      loadForm();
-    }
-  }, [eventId]);
+    loadForm();
+  }, []);
 
   const loadForm = async () => {
     try {
-      console.log('🔍 Loading form from:', `${API_URL}/forms/public/event/${eventId}`);
-      const response = await fetch(`${API_URL}/forms/public/event/${eventId}`);
+      console.log('🔍 Loading Bros & Brews form');
+      const response = await fetch(`${API_URL}/forms/public/event/cmggljv7z0002nt28gckp1jpe`);
       
       if (!response.ok) {
         throw new Error(`Failed to load form: ${response.statusText}`);
@@ -88,7 +86,7 @@ export default function PublicForm() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          eventId: eventId,  // From URL params - the REAL eventId!
+          eventId: 'cmggljv7z0002nt28gckp1jpe',  // HARDCODED Bros & Brews eventId!
           containerId: localStorage.getItem('containerId'),
           orgId: localStorage.getItem('orgId'),
           audienceType: localStorage.getItem('audienceType'),
