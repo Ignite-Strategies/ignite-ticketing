@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = 'https://eventscrm-backend.onrender.com/api';
 
 export default function PublicForm() {
   const navigate = useNavigate();
-  const { slug } = useParams(); // Get slug from URL
+  // No URL params needed - form is ID-driven from backend
   const [form, setForm] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
